@@ -1,9 +1,42 @@
+import { useEffect, useState } from "react";
+import { getMyDetails } from "../../service/auth";
+import { useNavigate } from "react-router-dom";
+
 const Dashboard = () => {
+    const navigate = useNavigate();
+    const [user, setUser] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchUser = async () => {
+            try {
+                setLoading(true);
+                const data = await getMyDetails();
+                setUser(data);
+            } catch (err) {
+                console.error("Failed to load user:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchUser();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="text-white flex justify-center items-center h-screen">
+                Loading...
+            </div>
+        );
+    }
+
     return (
         <div className="space-y-8 text-white">
 
             {/* Top Bar */}
             <div className="flex justify-between items-center">
+
                 <input
                     type="text"
                     placeholder="Search friends..."
@@ -11,8 +44,20 @@ const Dashboard = () => {
                 />
 
                 <div className="flex items-center space-x-3">
-                    <div className="text-sm text-gray-400">Welcome back</div>
-                    <div className="w-10 h-10 bg-green-500/20 border border-green-500 rounded-full" />
+
+                    <div className="text-sm text-gray-400">
+                        Welcome back,{" "}
+                        <span className="text-green-400 font-semibold">
+                            {user?.username}
+                        </span>
+                    </div>
+
+                    <img
+                        src={user?.profilePic || "/default-avatar.png"}
+                        className="w-10 h-10 rounded-full border border-green-500 object-cover cursor-pointer"
+                        alt="profile"
+                        onClick={() => navigate("/student/profile")}
+                    />
                 </div>
             </div>
 
@@ -37,44 +82,10 @@ const Dashboard = () => {
                             </h4>
                             <p className="text-sm text-gray-400 mt-2">
                                 {group.members} members ·{" "}
-                                <span className="text-green-400">{group.unread} unread</span>
+                                <span className="text-green-400">
+                                    {group.unread} unread
+                                </span>
                             </p>
-                        </div>
-                    ))}
-                </div>
-            </section>
-
-            {/* Posts */}
-            <section>
-                <h3 className="text-lg font-semibold mb-4 text-green-400">
-                    New Posts
-                </h3>
-
-                <div className="grid grid-cols-3 gap-5">
-                    {[1, 2, 3].map((post) => (
-                        <div
-                            key={post}
-                            className="bg-black/40 border border-gray-800 rounded-xl p-4 hover:border-green-500/50 hover:scale-[1.02] transition"
-                        >
-                            {/* User */}
-                            <div className="flex items-center mb-3">
-                                <div className="w-9 h-9 bg-gray-700 rounded-full mr-3" />
-                                <div>
-                                    <p className="font-semibold">Jane Doe</p>
-                                    <p className="text-xs text-gray-400">2h ago</p>
-                                </div>
-                            </div>
-
-                            {/* Content */}
-                            <p className="text-sm text-gray-300 mb-3">
-                                This is a sample post content for your dashboard UI.
-                            </p>
-
-                            {/* Actions */}
-                            <div className="flex space-x-4 text-green-400 text-sm">
-                                <span>❤️ 5</span>
-                                <span>💬 14</span>
-                            </div>
                         </div>
                     ))}
                 </div>

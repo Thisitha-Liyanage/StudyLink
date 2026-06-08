@@ -1,4 +1,4 @@
-import { Document, model, Schema } from "mongoose";
+import { Document, model, Schema, CallbackError } from "mongoose";
 
 export enum UserRole {
     ADMIN = "ADMIN",
@@ -24,7 +24,6 @@ const userSchema = new Schema<IUser>(
             required: true,
             trim: true,
         },
-
 
         contactNumber: {
             type: String,

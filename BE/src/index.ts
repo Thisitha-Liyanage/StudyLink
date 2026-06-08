@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRoutes from "./Routers/UserRoutes";
 import cors from "cors";
+import aiRoutes from "./Routers/AIRoute";
 
 dotenv.config(); // MUST be first
 
@@ -10,6 +11,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use("/api/users", userRoutes);
+app.use("/api/ai", aiRoutes);
 
 
 // DB CONNECT

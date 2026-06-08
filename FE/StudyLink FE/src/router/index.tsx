@@ -1,57 +1,63 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Register from "../Pages/register";
 
+import Register from "../Pages/register";
+import Login from "../Pages/Login";
+
+/* Admin */
 import AdminDashboardLayout from "../layouts/AdminDashBoardLayout";
 import AdminHomePage from "../Pages/admin/AdminHomepage";
 import AdminUserPage from "../Pages/admin/AdminUserPage";
 import AdminPostsPage from "../Pages/admin/AdminPostPage";
 
+/* Student */
 import StudentDashboardLayout from "../layouts/DashboardLayout";
 import StudentHome from "../Pages/student/HomePage";
 import StudentPostPage from "../Pages/student/PostPage";
 import StudentMessagesPage from "../Pages/student/MessagePage";
 import StudentNotesPage from "../Pages/student/NotePage";
 import StudentAIPage from "../Pages/student/ChatPage";
-
-
-import Login from "../Pages/Login";
+import StudentProfilePage from "../Pages/student/profilePage";
 
 const getRole = () => localStorage.getItem("role");
+const getToken = () => localStorage.getItem("token");
 
 type Props = {
   children: React.ReactNode;
-  role?: "admin" | "student";
+  role?: "ADMIN" | "STUDENT";
 };
 
 const ProtectedRoute = ({ children, role }: Props) => {
   const userRole = getRole();
+  const token = getToken();
 
-  if (!userRole) return <Navigate to="/login" />;
-
-  if (role && userRole !== role) {
-    return <Navigate to="/login" />;
+  if (!userRole || !token) {
+    return <Navigate to="/login" replace />;
   }
 
-  return children;
+  if (role && userRole !== role) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
 };
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-   
-        <Route path="/" element={<Navigate to="/login" />} />
 
-        
+        {/* DEFAULT ROUTE */}
+        <Route path="/" element={<Navigate to="/login" replace />} />
+
+        {/* AUTH ROUTES */}
         <Route path="/login" element={<Login />} />
-
         <Route path="/register" element={<Register />} />
 
-       /* admin routers */
+        {/* ADMIN ROUTES */}
         <Route
           path="/admin"
           element={
-            <ProtectedRoute role="admin">
+            <ProtectedRoute role="ADMIN">
               <AdminDashboardLayout />
             </ProtectedRoute>
           }
@@ -61,11 +67,11 @@ const Router = () => {
           <Route path="posts" element={<AdminPostsPage />} />
         </Route>
 
-        /* student routers  */
+        {/* STUDENT ROUTES */}
         <Route
           path="/student"
           element={
-            <ProtectedRoute role="student">
+            <ProtectedRoute role="STUDENT">
               <StudentDashboardLayout />
             </ProtectedRoute>
           }
@@ -75,7 +81,11 @@ const Router = () => {
           <Route path="messages" element={<StudentMessagesPage />} />
           <Route path="notes" element={<StudentNotesPage />} />
           <Route path="ai" element={<StudentAIPage />} />
+          <Route path="profile" element={<StudentProfilePage />} />
         </Route>
+
+        {/* FALLBACK */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
 
       </Routes>
     </BrowserRouter>

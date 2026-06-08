@@ -36,3 +36,24 @@ export const saveUser = async (user: any) => {
 
   return await newUser.save();
 };
+
+export const getUserById = async (userId: string) => {
+  const user = await UserModel.findById(userId).select("-password");
+  return user;
+};
+
+export const updateUserById = async (userId: string, data: any) => {
+  const updatedUser = await UserModel.findByIdAndUpdate(
+    userId,
+    {
+      username: data.username,
+      contactNumber: data.contactNumber, 
+      university: data.university,
+      bio: data.bio,
+      profilePic: data.profilePic,
+    },
+    { new: true }
+  ).select("-password");
+
+  return updatedUser;
+};

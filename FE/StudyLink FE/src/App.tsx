@@ -1,7 +1,12 @@
-import Router from './router/index';
+import Router from "./router/index";
+import { UserProvider } from "./context/AuthContext";
 
 function App() {
-  return  <Router />
+  return (
+    <UserProvider>
+      <Router />
+    </UserProvider>
+  );
 }
 
 export default App;
