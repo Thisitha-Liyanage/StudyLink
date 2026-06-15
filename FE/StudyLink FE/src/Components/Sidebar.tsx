@@ -31,10 +31,6 @@ const Sidebar = () => {
             Dashboard
           </NavLink>
 
-          <NavLink to="/student/posts" className={linkClass}>
-            Posts
-          </NavLink>
-
           <NavLink to="/student/messages" className={linkClass}>
             Messages
           </NavLink>

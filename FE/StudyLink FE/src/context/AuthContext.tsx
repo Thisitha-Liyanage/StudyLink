@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { getMyDetails } from "../service/auth";
 
 type User = {
@@ -16,10 +16,10 @@ type UserContextType = {
     refreshUser: () => void;
 };
 
-const UserContext = createContext<UserContextType>({
+export const UserContext = createContext<UserContextType>({
     user: null,
     loading: true,
-    refreshUser: () => { },
+    refreshUser: () => {},
 });
 
 export const UserProvider = ({ children }: any) => {
@@ -30,7 +30,7 @@ export const UserProvider = ({ children }: any) => {
         try {
             setLoading(true);
             const data = await getMyDetails();
-            setUser(data); 
+            setUser(data);
         } catch (err) {
             console.error("Failed to load user", err);
         } finally {
@@ -54,5 +54,3 @@ export const UserProvider = ({ children }: any) => {
         </UserContext.Provider>
     );
 };
-
-export const useUser = () => useContext(UserContext);

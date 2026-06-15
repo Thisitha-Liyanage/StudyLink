@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../../context/AuthContext";
+import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { updateProfile, uploadImage } from "../../service/auth";
 
 const ProfilePage = () => {
 
-    const { user, loading, refreshUser } = useUser();
+    const { user, loading, refreshUser } = useAuth();
     const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
@@ -111,13 +111,6 @@ const ProfilePage = () => {
                     className="bg-green-500 text-black px-6 py-2 rounded-xl hover:bg-green-400 transition"
                 >
                     Update Profile
-                </button>
-
-                <button
-                    onClick={() => navigate("/student/posts")}
-                    className="border border-green-500 text-green-400 px-6 py-2 rounded-xl hover:bg-green-500/10 transition"
-                >
-                    My Posts
                 </button>
 
                 <button

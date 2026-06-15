@@ -41,14 +41,6 @@ const Sidebar = () => {
                         <Users size={20} />
                         Users
                     </NavLink>
-
-                    {/* Posts */}
-                    <NavLink to="/admin/posts" className={linkClass}>
-                        <FileText size={20} />
-                        Posts
-                    </NavLink>
-
-
                 </nav>
             </div>
 

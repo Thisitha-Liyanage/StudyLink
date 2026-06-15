@@ -32,7 +32,6 @@ export const authenticate = (
 
     console.log("Decoded Token:", decoded);
 
-    // ✅ NORMALIZE HERE (IMPORTANT FIX)
     req.user = {
       id: decoded.id || decoded.userId || decoded._id,
     };

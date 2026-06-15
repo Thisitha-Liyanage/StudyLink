@@ -7,16 +7,16 @@ import Login from "../Pages/Login";
 import AdminDashboardLayout from "../layouts/AdminDashBoardLayout";
 import AdminHomePage from "../Pages/admin/AdminHomepage";
 import AdminUserPage from "../Pages/admin/AdminUserPage";
-import AdminPostsPage from "../Pages/admin/AdminPostPage";
 
 /* Student */
 import StudentDashboardLayout from "../layouts/DashboardLayout";
 import StudentHome from "../Pages/student/HomePage";
-import StudentPostPage from "../Pages/student/PostPage";
+
 import StudentMessagesPage from "../Pages/student/MessagePage";
 import StudentNotesPage from "../Pages/student/NotePage";
 import StudentAIPage from "../Pages/student/ChatPage";
 import StudentProfilePage from "../Pages/student/profilePage";
+import CreateNotePage from "../Pages/student/CreateNotePage";
 
 const getRole = () => localStorage.getItem("role");
 const getToken = () => localStorage.getItem("token");
@@ -42,7 +42,7 @@ const ProtectedRoute = ({ children, role }: Props) => {
 };
 
 const Router = () => {
-  return (
+  return (  
     <BrowserRouter>
       <Routes>
 
@@ -64,7 +64,6 @@ const Router = () => {
         >
           <Route index element={<AdminHomePage />} />
           <Route path="users" element={<AdminUserPage />} />
-          <Route path="posts" element={<AdminPostsPage />} />
         </Route>
 
         {/* STUDENT ROUTES */}
@@ -75,21 +74,21 @@ const Router = () => {
               <StudentDashboardLayout />
             </ProtectedRoute>
           }
-        >
+          >
           <Route index element={<StudentHome />} />
-          <Route path="posts" element={<StudentPostPage />} />
           <Route path="messages" element={<StudentMessagesPage />} />
           <Route path="notes" element={<StudentNotesPage />} />
           <Route path="ai" element={<StudentAIPage />} />
           <Route path="profile" element={<StudentProfilePage />} />
-        </Route>
+          <Route path="notes/create" element={<CreateNotePage />} />
+          <Route path="notes/create/:id" element={<CreateNotePage />} />
 
         {/* FALLBACK */}
         <Route path="*" element={<Navigate to="/login" replace />} />
-
+          </Route>      
       </Routes>
     </BrowserRouter>
-  );
+    );
 };
 
 export default Router;

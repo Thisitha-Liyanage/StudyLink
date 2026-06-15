@@ -57,3 +57,12 @@ export const updateUserById = async (userId: string, data: any) => {
 
   return updatedUser;
 };
+
+export const searchUsers = async (username: string) => {
+  return await UserModel.find({
+    username: {
+      $regex: username,
+      $options: "i",
+    },
+  }).select("_id username profilePic university");
+};
