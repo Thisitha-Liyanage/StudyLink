@@ -2,6 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import { getMyDetails } from "../service/auth";
 
 type User = {
+    _id: string;
     username: string;
     email: string;
     contactNumber: string;

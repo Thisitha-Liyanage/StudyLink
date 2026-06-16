@@ -5,6 +5,7 @@ import userRoutes from "./Routers/UserRoutes";
 import cors from "cors";
 import aiRoutes from "./Routers/AIRoute";
 import noteRoutes from "./Routers/NoteRoute";
+import messageRoutes from "./Routers/MessageRoute";
 
 
 dotenv.config(); 
@@ -15,8 +16,7 @@ app.use(express.json());
 app.use("/api/users", userRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/notes", noteRoutes);
-
-
+app.use("/api/messages", messageRoutes);
 
 // DB CONNECT
 mongoose

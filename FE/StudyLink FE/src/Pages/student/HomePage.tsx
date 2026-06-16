@@ -3,6 +3,7 @@ import { getMyDetails } from "../../service/auth";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { searchUsersThunk } from "../../redux/slices/userSlice";
+import { setSelectedUser } from "../../redux/slices/MessageSlice";
 import { getMyNotes } from "../../service/NoteService";
 
 const Dashboard = () => {
@@ -12,10 +13,11 @@ const Dashboard = () => {
     const [user, setUser] = useState<any>(null);
     const [loading, setLoading] = useState(true);
     const [search, setSearch] = useState("");
-    const [selectedUser, setSelectedUser] = useState<any>(null);
     const [myNotes, setMyNotes] = useState<any[]>([]);
 
+    // ✅ FIX: correct redux slices
     const { searchResults } = useAppSelector((state) => state.user);
+    const { selectedUser } = useAppSelector((state) => state.chat);
 
     useEffect(() => {
         const fetchUser = async () => {
@@ -33,7 +35,7 @@ const Dashboard = () => {
         const fetchNotes = async () => {
             try {
                 const notes = await getMyNotes();
-                setMyNotes(notes.slice(0, 6)); // only 6 notes
+                setMyNotes(notes.slice(0, 6));
             } catch (err) {
                 console.error("Failed to load notes:", err);
             }
@@ -78,7 +80,7 @@ const Dashboard = () => {
                         {searchResults.map((u: any) => (
                             <div
                                 key={u._id}
-                                onClick={() => setSelectedUser(u)}
+                                onClick={() => dispatch(setSelectedUser(u))}
                                 className="flex items-center gap-3 p-2 border-b border-gray-700 cursor-pointer hover:bg-black/50"
                             >
                                 <img
@@ -114,7 +116,7 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            {/* MY NOTES (6 CARDS) */}
+            {/* MY NOTES */}
             <section>
                 <h3 className="text-lg font-semibold mb-4 text-blue-400">
                     My Notes
@@ -123,6 +125,7 @@ const Dashboard = () => {
                 <div className="grid grid-cols-3 gap-4">
                     {myNotes.map((note: any) => (
                         <div
+                            key={note._id}
                             onClick={() => navigate("/student/notes")}
                             className="cursor-pointer bg-black/40 border border-gray-700 rounded-xl p-4 hover:border-blue-400 hover:scale-[1.02] transition"
                         >
@@ -138,11 +141,11 @@ const Dashboard = () => {
                 </div>
             </section>
 
-            {/* POPUP MODAL */}
+            {/* MODAL */}
             {selectedUser && (
                 <div
                     className="fixed inset-0 bg-black/70 flex items-center justify-center z-50"
-                    onClick={() => setSelectedUser(null)}
+                    onClick={() => dispatch(setSelectedUser(null))}
                 >
                     <div
                         className="bg-[#1A1D29] w-[350px] rounded-2xl p-5 border border-gray-700"
@@ -150,7 +153,7 @@ const Dashboard = () => {
                     >
                         <div className="flex justify-end">
                             <button
-                                onClick={() => setSelectedUser(null)}
+                                onClick={() => dispatch(setSelectedUser(null))}
                                 className="text-gray-400 hover:text-white"
                             >
                                 ✕
@@ -173,17 +176,19 @@ const Dashboard = () => {
                         </div>
 
                         <div className="mt-5 flex flex-col gap-3">
+
                             <button
-                                onClick={() =>
-                                    navigate(`/student/chat/${selectedUser._id}`)
-                                }
+                                onClick={() => {
+                                    dispatch(setSelectedUser(selectedUser));
+                                    navigate("/student/messages");
+                                }}
                                 className="bg-green-500 hover:bg-green-400 text-black font-semibold py-2 rounded-xl"
                             >
                                 Send Message
                             </button>
 
                             <button
-                                onClick={() => setSelectedUser(null)}
+                                onClick={() => dispatch(setSelectedUser(null))}
                                 className="bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-xl"
                             >
                                 Close
