@@ -4,6 +4,7 @@ import notesReducer from "./slices/notesslice";
 import aiReducer from "./slices/AISlice";
 import userReducer from "./slices/userSlice";
 import chatReducer from "./slices/MessageSlice";
+import adminReducer from "../redux/slices/AdminSlice";
 
 export const store = configureStore({
   reducer: {
@@ -12,6 +13,7 @@ export const store = configureStore({
     ai: aiReducer, 
     user: userReducer,
     chat: chatReducer,
+    admin: adminReducer,
   },
 });
 

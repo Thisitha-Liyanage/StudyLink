@@ -47,7 +47,7 @@ export const updateUserById = async (userId: string, data: any) => {
     userId,
     {
       username: data.username,
-      contactNumber: data.contactNumber, 
+      contactNumber: data.contactNumber,
       university: data.university,
       bio: data.bio,
       profilePic: data.profilePic,
@@ -65,4 +65,16 @@ export const searchUsers = async (username: string) => {
       $options: "i",
     },
   }).select("_id username profilePic university");
+};
+
+
+export const getAllUsersService = async () => {
+    return await UserModel.find(
+        {
+            role: UserRole.STUDENT
+        },
+        {
+            password: 0
+        }
+    );
 };
