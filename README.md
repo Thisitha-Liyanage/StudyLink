@@ -5,29 +5,30 @@ Students can register, update their profiles, chat with other users, create post
 The system is designed with a focus on simplicity, performance, and a smooth user experience.
 
 Technologies Used
-    Frontend
-    React (TypeScript)
-    Redux Toolkit (state management)
-    Context API (auth/admin state handling)
-    React Router DOM (navigation)
-    Tailwind CSS (styling)
-    Lucide React (icons)
-    Axios (API calls)
+
+Frontend
+React (TypeScript)
+Redux Toolkit (state management)
+Context API (auth/admin state handling)
+React Router DOM (navigation)
+Tailwind CSS (styling)
+Lucide React (icons)
+Axios (API calls)
     
 Backend
-    Node.js
-    Express.js
-    TypeScript
-    MongoDB with Mongoose
-    JSON Web Token (authentication)
-    Bcrypt (password hashing)
-    Middleware-based role authorization
+Node.js
+Express.js
+TypeScript
+MongoDB with Mongoose
+JSON Web Token (authentication)
+Bcrypt (password hashing)
+Middleware-based role authorization
     
 Features
-    User registration and login
-    Role-based access (Admin / Student)
-    Real-time-like messaging system
-    Profile management with image upload
-    Admin dashboard with user management
-    Search and filtering functionality
-    Notes and posts management system
+User registration and login
+Role-based access (Admin / Student)
+Real-time-like messaging system
+Profile management with image upload
+Admin dashboard with user management
+Search and filtering functionality
+Notes and posts management system
