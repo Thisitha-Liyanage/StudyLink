@@ -1,4 +1,3 @@
-import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import { useState, useEffect } from "react";
 import { updateProfile, uploadImage } from "../../service/auth";
@@ -6,7 +5,7 @@ import { updateProfile, uploadImage } from "../../service/auth";
 const ProfilePage = () => {
 
     const { user, loading, refreshUser } = useAuth();
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
 
     const [showModal, setShowModal] = useState(false);
 

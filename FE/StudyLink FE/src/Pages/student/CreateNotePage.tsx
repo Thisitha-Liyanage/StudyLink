@@ -7,7 +7,7 @@ import { extractTextFromPDF } from "../../service/NoteService";
 import { useParams } from "react-router-dom";
 import { getNoteById, updateNote } from "../../service/NoteService";
 import { deleteNoteThunk } from "../../redux/slices/notesslice";
-import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+import { useAppDispatch } from "../../redux/hooks";
 import { summarizeNoteThunk } from "../../redux/slices/AISlice";
 
 const CreateNotePage = () => {

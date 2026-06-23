@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Search, Send, MoreVertical } from "lucide-react";
+import {Send, MoreVertical } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
     getMessages,
@@ -78,7 +78,7 @@ const MessagesPage = () => {
         <div className="h-[90vh] flex gap-6 text-white">
 
 
-            <div className="w-[350px] bg-[#1A1D29] border border-gray-800 rounded-2xl p-5 overflow-y-auto">
+            <div className="w-87.5 bg-[#1A1D29] border border-gray-800 rounded-2xl p-5 overflow-y-auto">
 
                 <h3 className="text-gray-400 mb-3">Chats</h3>
 
@@ -87,10 +87,10 @@ const MessagesPage = () => {
                 )}
 
                 {chatList.map((chat: any) => {
-                    const myId = user?._id;
+                    // const myId = user?._id;
 
                     // 🔥 IMPORTANT: backend already gives "other user id"
-                    const otherUserId = chat.userId;
+                    // const otherUserId = chat.userId;
 
                     return (
                         <div
@@ -157,7 +157,7 @@ const MessagesPage = () => {
                                     }`}
                             >
                                 <div
-                                    className={`px-4 py-2 rounded-2xl max-w-[300px] ${isMine
+                                    className={`px-4 py-2 rounded-2xl max-w-75 ${isMine
                                         ? "bg-green-500 text-black"
                                         : "bg-black/30 text-white"
                                         }`}

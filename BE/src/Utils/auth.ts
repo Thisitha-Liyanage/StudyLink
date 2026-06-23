@@ -7,7 +7,6 @@ dotenv.config();
 const JWT_SECRET = process.env.JWT_SECRET as string;
 const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET as string;
 
-// ACCESS TOKEN
 export const signAccessToken = (user: IUser): string => {
   return jwt.sign(
     {
@@ -21,7 +20,6 @@ export const signAccessToken = (user: IUser): string => {
   );
 };
 
-// REFRESH TOKEN
 export const signRefreshToken = (user: IUser): string => {
   return jwt.sign(
     {

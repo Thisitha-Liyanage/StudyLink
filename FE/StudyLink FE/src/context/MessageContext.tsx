@@ -1,8 +1,14 @@
 import { createContext, useState } from "react";
+import type { ReactNode } from "react";
 
-const MessageContext = createContext(null);
+type MessageContextType = {
+    selectedUser: any;
+    setSelectedUser: React.Dispatch<React.SetStateAction<any>>;
+};
 
-export const MessageProvider = ({ children }) => {
+const MessageContext = createContext<MessageContextType | null>(null);
+
+export const MessageProvider = ({ children }: { children: ReactNode }) => {
     const [selectedUser, setSelectedUser] = useState(null);
 
     return (
