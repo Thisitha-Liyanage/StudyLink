@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
 
+// "dev": "ts-node-dev --respawn src/index.ts",
+
 const messageSchema = new mongoose.Schema(
   {
     conversationId: { type: String, required: true },
