@@ -15,8 +15,7 @@ const PORT = process.env.PORT || 5000;
 
 const app = express();
 const allowedOrigins = [
-  "https://freelancefluxo-web.vercel.app",
-  "http://localhost:5173",
+  "https://study-link-jwxa.vercel.app",
   process.env.CLIENT_URL,
 ].filter(Boolean) as string[];
 
@@ -42,7 +41,7 @@ app.get("/api/v1/health", (_req, res) => {
   res.json({ success: true, message: "Freelance-Fluxo API is running" });
 });
 
- 
+
 const start = async () => {
   await mongoDB();
 
