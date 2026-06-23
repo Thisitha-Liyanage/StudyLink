@@ -27,20 +27,19 @@ app.use("/api/ai", AIRoute_1.default);
 app.use("/api/notes", NoteRoute_1.default);
 app.use("/api/messages", MessageRoute_1.default);
 app.use("/api/admin", AdminRoutes_1.default);
+app.get("/", (req, res) => {
+    res.send("StudyLink Backend Running");
+});
 // DB CONNECT
 mongoose_1.default
     .connect(process.env.DB_URL)
     .then(() => {
     console.log("MongoDB Connected");
-    // start server ONLY after DB connects
-    const PORT = process.env.PORT || 5000;
-    app.listen(PORT, () => {
-        console.log(`Server running on port ${PORT}`);
-    });
 })
     .catch((err) => {
     console.error("MongoDB connection failed:", err);
 });
-app.get("/", (req, res) => {
-    res.send("StudyLink Backend Running");
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
 });
