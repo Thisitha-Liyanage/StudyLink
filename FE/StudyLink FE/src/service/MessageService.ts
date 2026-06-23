@@ -1,13 +1,13 @@
 import axios from "axios";
 
-const API = "http://localhost:5000/api/messages";
+import api from "./api";
 
 const getToken = () => localStorage.getItem("token");
 
 // 📥 GET CONVERSATION
 export const getMessages = async (receiverId: string) => {
     const res = await axios.get(
-        `${API}/conversation/${receiverId}`,
+        `${api}/conversation/${receiverId}`,
         {
             headers: {
                 Authorization: `Bearer ${getToken()}`,
@@ -24,7 +24,7 @@ export const sendMessage = async (data: {
     message: string;
 }) => {
     const res = await axios.post(
-        `${API}/send`,
+        `${api}/send`,
         data,
         {
             headers: {
@@ -37,7 +37,7 @@ export const sendMessage = async (data: {
 };
 
 export const getChatList = async () => {
-    const res = await axios.get(`${API}/chat-list`, {
+    const res = await axios.get(`${api}/chat-list`, {
         headers: { Authorization: `Bearer ${getToken()}` },
     });
 
