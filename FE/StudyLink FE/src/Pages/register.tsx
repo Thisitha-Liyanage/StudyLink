@@ -60,7 +60,7 @@ function Register() {
 
         try {
             const response = await axios.post(
-                "http://localhost:5000/api/users/register",
+                "https://study-link-jwxa.vercel.app/api/users/register",
                 {
                     username: form.username,
                     email: form.email,
