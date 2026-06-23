@@ -37,7 +37,7 @@ app.use("/api/notes", noteRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/admin", adminRoutes);
 
-app.get("/api/v1/health", (_req, res) => {
+app.get("/", (_req, res) => {
   res.json({ success: true, message: "Freelance-Fluxo API is running" });
 });
 

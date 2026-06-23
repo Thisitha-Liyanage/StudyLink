@@ -3,43 +3,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = __importDefault(require("express"));
 const dotenv_1 = __importDefault(require("dotenv"));
-const mongoose_1 = __importDefault(require("mongoose"));
-const UserRoutes_1 = __importDefault(require("./Routers/UserRoutes"));
+dotenv_1.default.config();
+const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const db_1 = __importDefault(require("./config/db"));
+const http_1 = require("http");
+const UserRoutes_1 = __importDefault(require("./Routers/UserRoutes"));
 const AIRoute_1 = __importDefault(require("./Routers/AIRoute"));
 const NoteRoute_1 = __importDefault(require("./Routers/NoteRoute"));
 const MessageRoute_1 = __importDefault(require("./Routers/MessageRoute"));
 const AdminRoutes_1 = __importDefault(require("./Routers/AdminRoutes"));
-dotenv_1.default.config();
+const PORT = process.env.PORT || 5000;
 const app = (0, express_1.default)();
+const allowedOrigins = [
+    "https://study-link-jwxa.vercel.app",
+    process.env.CLIENT_URL,
+].filter(Boolean);
 app.use((0, cors_1.default)({
-    origin: [
-        "https://study-link-git-master-thisitha.vercel.app",
-    ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
 }));
 app.use(express_1.default.json());
+app.use(express_1.default.urlencoded({ extended: true }));
 app.use("/api/users", UserRoutes_1.default);
 app.use("/api/ai", AIRoute_1.default);
 app.use("/api/notes", NoteRoute_1.default);
 app.use("/api/messages", MessageRoute_1.default);
 app.use("/api/admin", AdminRoutes_1.default);
-app.get("/", (req, res) => {
-    res.send("StudyLink Backend Running");
+app.get("/", (_req, res) => {
+    res.json({ success: true, message: "Freelance-Fluxo API is running" });
 });
-// DB CONNECT
-mongoose_1.default
-    .connect(process.env.DB_URL)
-    .then(() => {
-    console.log("MongoDB Connected");
-})
-    .catch((err) => {
-    console.error("MongoDB connection failed:", err);
-});
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+const start = async () => {
+    await (0, db_1.default)();
+    const server = (0, http_1.createServer)(app);
+    server.listen(PORT, () => {
+        console.log(`Server is running on port : ${PORT}`);
+    });
+};
+start();
