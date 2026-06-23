@@ -1,34 +1,61 @@
-Project Overview
+#  Study Link
 
-Study Link project is a full-stack web application designed to help students and admins manage and interact through a centralized platform. It includes features like user authentication, messaging, profile management, and an admin dashboard for monitoring users, posts, and system activity.
-Students can register, update their profiles, chat with other users, create posts, and manage personal notes. Admin users have access to a dashboard where they can view all registered users and monitor platform activity.
-The system is designed with a focus on simplicity, performance, and a smooth user experience.
+##  Project Description
 
-Technologies Used
+**Study Link** is a full-stack web application designed to help students and admins manage and interact through a centralized platform. It provides features such as authentication, messaging, profile management, notes, ai chat, and an admin dashboard for monitoring users and system activity.
 
-Frontend
-React (TypeScript)
-Redux Toolkit (state management)
-Context API (auth/admin state handling)
-React Router DOM (navigation)
-Tailwind CSS (styling)
-Lucide React (icons)
-Axios (API calls)
-    
-Backend
-Node.js
-Express.js
-TypeScript
-MongoDB with Mongoose
-JSON Web Token (authentication)
-Bcrypt (password hashing)
-Middleware-based role authorization
-    
-Features
-User registration and login
-Role-based access (Admin / Student)
-Real-time-like messaging system
-Profile management with image upload
-Admin dashboard with user management
-Search and filtering functionality
-Notes and posts management system
+The system focuses on **simplicity, performance, and smooth user experience**.
+
+
+
+##  FrontEnd URL
+ https://study-link-git-master-thisitha.vercel.app/login
+
+
+## 🚀 Features
+
+### 👤 User Features
+- User registration and login
+- Profile management with image upload
+- Create and manage personal notes
+- Create and interact with posts
+- Real-time-like messaging system
+- Search and filtering users
+
+
+
+### 🛠️ Admin Features
+- Admin dashboard access
+- View all registered users
+- Monitor notes and posts activity
+- System overview and statistics
+
+
+
+### ⚙️ System Features
+- Role-based access control (Admin / Student)
+- Secure authentication using JWT
+- Password encryption using Bcrypt
+- Protected routes and middleware authorization
+
+
+
+## 🧑‍💻 Technologies Used
+
+### 🎨 Frontend
+- React (TypeScript)
+- Redux Toolkit
+- Context API
+- React Router DOM
+- Tailwind CSS
+- Lucide React
+- Axios
+
+### ⚙️ Backend
+- Node.js
+- Express.js
+- TypeScript
+- MongoDB with Mongoose
+- JSON Web Token (JWT)
+- Bcrypt
+- Role-based middleware
