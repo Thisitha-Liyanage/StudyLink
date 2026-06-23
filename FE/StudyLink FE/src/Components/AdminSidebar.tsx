@@ -15,10 +15,9 @@ const AdminSidebar = () => {
     };
 
     const linkClass = ({ isActive }: { isActive: boolean }) =>
-        `flex items-center gap-3 px-4 py-3 rounded-xl transition ${
-            isActive
-                ? "bg-green-500 text-black font-semibold"
-                : "text-gray-300 hover:bg-green-500/10 hover:text-green-400"
+        `flex items-center gap-3 px-4 py-3 rounded-xl transition ${isActive
+            ? "bg-green-500 text-black font-semibold"
+            : "text-gray-300 hover:bg-green-500/10 hover:text-green-400"
         }`;
 
     return (
@@ -30,7 +29,6 @@ const AdminSidebar = () => {
                 </h1>
 
                 <nav className="space-y-3">
-
                     <NavLink to="/admin" end className={linkClass}>
                         <LayoutDashboard size={20} />
                         Dashboard
@@ -40,7 +38,6 @@ const AdminSidebar = () => {
                         <Users size={20} />
                         Users
                     </NavLink>
-
                 </nav>
             </div>
 
