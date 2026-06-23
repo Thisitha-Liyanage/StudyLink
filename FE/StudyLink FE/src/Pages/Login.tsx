@@ -63,7 +63,7 @@ function Login() {
       {/* Left Image */}
       <div className="hidden md:block w-1/2 h-full">
         <img
-          src="//Loginimage.jpg"
+          src="/Loginimage.jpg"
           alt="student"
           className="w-full h-full object-cover"
         />
