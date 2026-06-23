@@ -4,14 +4,11 @@ import express from "express";
 import cors from "cors";
 import mongoDB from "./config/db";
 import jwt from 'jsonwebtoken';
-import { createServer } from 'http';
 import userRoutes from './Routers/UserRoutes';
 import aiRoutes from "./Routers/AIRoute";
 import noteRoutes from "./Routers/NoteRoute";
 import messageRoutes from "./Routers/MessageRoute";
 import adminRoutes from "./Routers/AdminRoutes";
-
-const PORT = process.env.PORT || 5000;
 
 const app = express();
 const allowedOrigins = [
@@ -38,18 +35,11 @@ app.use("/api/messages", messageRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.get("/", (_req, res) => {
-  res.json({ success: true, message: "Freelance-Fluxo API is running" });
+  res.json({ success: true, message: "study-link API is running" });
 });
 
+// 1. Establish the database connection immediately during cold start initialization
+mongoDB().catch((err) => console.error("Database connection failed:", err));
 
-const start = async () => {
-  await mongoDB();
-
-  const server = createServer(app);
-
-  server.listen(PORT, () => {
-    console.log(`Server is running on port : ${PORT}`);
-  });
-};
-
-start();
+// 2. CRITICAL CHANGE: Export the app instance instead of calling server.listen()
+export default app;
