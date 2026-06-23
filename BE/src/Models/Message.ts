@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 // "dev": "ts-node-dev --respawn src/index.ts",
+// "typescript": "^6.0.3"
 
 const messageSchema = new mongoose.Schema(
   {
