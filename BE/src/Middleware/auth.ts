@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
+import mongoDB from "../config/db"; // 1. IMPORT YOUR DATABASE FUNCTION
 
 dotenv.config();
 
@@ -10,7 +11,8 @@ export interface AuthRequest extends Request {
   user?: any;
 }
 
-export const authenticate = (
+// 2. MAKE THIS FUNCTION 'async'
+export const authenticate = async (
   req: AuthRequest,
   res: Response,
   next: NextFunction
@@ -35,6 +37,9 @@ export const authenticate = (
     req.user = {
       id: decoded.id || decoded.userId || decoded._id,
     };
+
+    // 3. FORCE VERCEL TO WAIT FOR MONGO BEFORE MOVING TO THE ROUTE HANDLER
+    await mongoDB();
 
     next();
   } catch (error) {
