@@ -1,33 +1,70 @@
+// import bcrypt from "bcryptjs";
+// import { UserModel, UserRole } from "../Models/User";
+
+// export const saveUser = async (user: any) => {
+//   const {
+//     username,
+//     email,
+//     password,
+//     contactNumber,
+//   } = user;
+
+//   const exUser = await UserModel.findOne({ email });
+
+//   if (exUser) {
+//     throw new Error("Email already exists");
+//   }
+
+//   const hashedPassword = await bcrypt.hash(
+//     password,
+//     10
+//   );
+
+//   const newUser = new UserModel({
+//     username,
+//     email,
+//     password: hashedPassword,
+//     contactNumber,
+
+//     role: UserRole.STUDENT,
+
+//     profilePic: "",
+//     bio: "",
+//     university: "",
+//     skills: [],
+//   });
+
+//   return await newUser.save();
+// };
+
+// export const getUserById = async (userId: string) => {
+//   const user = await UserModel.findById(userId).select("-password");
+//   return user;
+// };
+
+
 import bcrypt from "bcryptjs";
 import { UserModel, UserRole } from "../Models/User";
+import mongoDB from "../config/db"; // <-- IMPORT YOUR DB UTILITY HERE
 
 export const saveUser = async (user: any) => {
-  const {
-    username,
-    email,
-    password,
-    contactNumber,
-  } = user;
-
+  await mongoDB(); // <-- GUARANTEES CONNECTION IS LIVE RIGHT NOW
+  
+  const { username, email, password, contactNumber } = user;
   const exUser = await UserModel.findOne({ email });
 
   if (exUser) {
     throw new Error("Email already exists");
   }
 
-  const hashedPassword = await bcrypt.hash(
-    password,
-    10
-  );
+  const hashedPassword = await bcrypt.hash(password, 10);
 
   const newUser = new UserModel({
     username,
     email,
     password: hashedPassword,
     contactNumber,
-
     role: UserRole.STUDENT,
-
     profilePic: "",
     bio: "",
     university: "",
@@ -38,9 +75,12 @@ export const saveUser = async (user: any) => {
 };
 
 export const getUserById = async (userId: string) => {
+  await mongoDB(); // <-- ADD THIS HERE TOO
   const user = await UserModel.findById(userId).select("-password");
   return user;
 };
+
+// ... apply 'await mongoDB();' to your other service functions if errors persist
 
 export const updateUserById = async (userId: string, data: any) => {
   const updatedUser = await UserModel.findByIdAndUpdate(
