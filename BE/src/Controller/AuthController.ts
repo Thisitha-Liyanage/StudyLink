@@ -9,9 +9,7 @@ dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
 
-/* =========================
-   REGISTER
-========================= */
+
 export const registerUser = async (req: Request, res: Response) => {
   try {
     const {
