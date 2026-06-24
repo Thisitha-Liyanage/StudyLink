@@ -71,6 +71,7 @@ const userSchema = new Schema<IUser>(
     },
     {
         timestamps: true,
+        // let BE to connect DB before Mongoose starts buffering commands, otherwise we get "MongooseError: Operation users.insertOne() buffering timed out after 10000ms" when DB connection is slow
         bufferCommands: true,
 
     }
