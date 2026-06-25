@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://study-link-jwxa.vercel.app/api",
+  baseURL: "http://localhost5000/api",
 });
 
 api.interceptors.request.use((config) => {

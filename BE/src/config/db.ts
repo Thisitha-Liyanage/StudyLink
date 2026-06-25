@@ -2,16 +2,12 @@ import mongoose from "mongoose";
 
 const DB_URL = (process.env.DB_URL || process.env.MONGODB_URI) as string;
 
-// Cache the connection promise globally across serverless invocations
 let cachedConnection: Promise<typeof mongoose> | null = null;
 
 const mongoDB = async () => {
-    // 1. If already fully connected, return immediately
     if (mongoose.connection.readyState === 1) {
         return mongoose.connection;
     }
-
-    // 2. If a connection is already in progress, wait for THAT exact same promise
     if (cachedConnection) {
         return cachedConnection;
     }
@@ -25,7 +21,6 @@ const mongoDB = async () => {
 
         console.log("Creating new MongoDB connection pool...");
         
-        // 3. Store the connection promise so concurrent requests share it
         cachedConnection = mongoose.connect(DB_URL, {
             serverSelectionTimeoutMS: 5000,
         });
@@ -35,8 +30,10 @@ const mongoDB = async () => {
         
         return mongoose.connection;
     } catch (error) {
+        mongoDB();
+        
         console.log("DB connection error:", error);
-        cachedConnection = null; // Reset cache on failure so it can retry next time
+        cachedConnection = null;
         throw error;
     }
 };

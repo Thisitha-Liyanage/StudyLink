@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import mongoDB from "../config/db"; // 1. IMPORT YOUR DATABASE FUNCTION
+import mongoDB from "../config/db"; 
 
 dotenv.config();
 

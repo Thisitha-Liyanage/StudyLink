@@ -11,14 +11,14 @@ import messageRoutes from "./Routers/MessageRoute";
 import adminRoutes from "./Routers/AdminRoutes";
 
 const app = express();
-const allowedOrigins = [
-  "https://study-link-jwxa.vercel.app",
-  process.env.CLIENT_URL,
-].filter(Boolean) as string[];
+// const allowedOrigins = [
+//   "https://study-link-jwxa.vercel.app",
+//   process.env.CLIENT_URL,
+// ].filter(Boolean) as string[];
 
 app.use(
   cors({
-    origin: allowedOrigins,
+    origin: "http://localhost:5173", // Allow all origins for now
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -38,8 +38,7 @@ app.get("/", (_req, res) => {
   res.json({ success: true, message: "study-link API is running" });
 });
 
-// 1. Establish the database connection immediately during cold start initialization
+
 mongoDB().catch((err) => console.error("Database connection failed:", err));
 
-// 2. CRITICAL CHANGE: Export the app instance instead of calling server.listen()
 export default app;
