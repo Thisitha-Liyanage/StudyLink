@@ -21,8 +21,7 @@ The system focuses on **simplicity, performance, and smooth user experience**.
 - User registration and login
 - Profile management with image upload
 - Create and manage personal notes
-- Create and interact with posts
-- Real-time-like messaging system
+- Messaging system
 - Search and filtering users
 
 
@@ -30,7 +29,7 @@ The system focuses on **simplicity, performance, and smooth user experience**.
 ### 🛠️ Admin Features
 - Admin dashboard access
 - View all registered users
-- Monitor notes and posts activity
+- Monitor notes activity
 - System overview and statistics
 
 
