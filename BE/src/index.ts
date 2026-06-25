@@ -16,6 +16,7 @@ const app = express();
 //   process.env.CLIENT_URL,
 // ].filter(Boolean) as string[];
 
+// allow for origin
 app.use(
   cors({
     origin: "*", // Allow all origins for now
