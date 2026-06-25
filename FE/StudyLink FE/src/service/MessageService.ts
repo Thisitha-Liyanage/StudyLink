@@ -1,45 +1,44 @@
 import axios from "axios";
-
-import api from "./api";
+import api from "./api"; 
 
 const getToken = () => localStorage.getItem("token");
 
-// 📥 GET CONVERSATION
-export const getMessages = async (receiverId: string) => {
-    const res = await axios.get(
-        `${api}/conversation/${receiverId}`,
-        {
-            headers: {
-                Authorization: `Bearer ${getToken()}`,
-            },
-        }
-    );
+const getAuthHeaders = () => ({
+    headers: {
+        Authorization: `Bearer ${getToken()}`,
+        "Content-Type": "application/json"
+    }
+});
 
+
+export const getMessages = async (receiverId: string) => {
+
+    const res = await axios.get(
+        `${api}/messages/conversation/${receiverId}`,
+        getAuthHeaders()
+    );
     return res.data;
 };
 
-// 📤 SEND MESSAGE
+
 export const sendMessage = async (data: {
     receiverId: string;
     message: string;
 }) => {
-    const res = await axios.post(
-        `${api}/send`,
-        data,
-        {
-            headers: {
-                Authorization: `Bearer ${getToken()}`,
-            },
-        }
-    );
 
+    const res = await axios.post(
+        `${api}/messages`,
+        data,
+        getAuthHeaders()
+    );
     return res.data;
 };
 
+// 📂 GET CHAT LIST
 export const getChatList = async () => {
-    const res = await axios.get(`${api}/chat-list`, {
-        headers: { Authorization: `Bearer ${getToken()}` },
-    });
-
+    const res = await axios.get(
+        `${api}/messages/chat-list`,
+        getAuthHeaders()
+    );
     return res.data;
 };
