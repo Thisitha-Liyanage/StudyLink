@@ -39,10 +39,10 @@ app.get("/", (_req, res) => {
 
 mongoDB().catch((err) => console.error("Database connection failed:", err));
 
-const PORT = process.env.PORT || 5000;
+// const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server is running locally on http://localhost:${PORT}`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server is running locally on http://localhost:${PORT}`);
+// });
 
 export default app;
