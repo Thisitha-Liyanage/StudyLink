@@ -11,15 +11,11 @@ import messageRoutes from "./Routers/MessageRoute";
 import adminRoutes from "./Routers/AdminRoutes";
 
 const app = express();
-// const allowedOrigins = [
-//   "https://study-link-jwxa.vercel.app",
-//   process.env.CLIENT_URL,
-// ].filter(Boolean) as string[];
 
-// allow for origin
+// Set up CORS
 app.use(
   cors({
-    origin: "*", // Allow all origins for now
+    origin: "*", 
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -29,6 +25,7 @@ app.use(
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Routes
 app.use("/api/users", userRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/notes", noteRoutes);
@@ -39,7 +36,14 @@ app.get("/", (_req, res) => {
   res.json({ success: true, message: "study-link API is running" });
 });
 
-
+// 1. Connect to the Database
 mongoDB().catch((err) => console.error("Database connection failed:", err));
+
+// 2. Fetch the PORT from .env (fallback to 5000 if not found)
+const PORT = process.env.PORT || 5000;
+
+app.listen(PORT, () => {
+  console.log(`Server is running locally on http://localhost:${PORT}`);
+});
 
 export default app;
