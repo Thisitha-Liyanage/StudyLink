@@ -34,12 +34,12 @@ app.use("/api/admin", adminRoutes);
 
 app.get("/", (_req, res) => {
   res.json({ success: true, message: "study-link API is running" });
+  console.log("study-link API is running");
 });
 
 // 1. Connect to the Database
 mongoDB().catch((err) => console.error("Database connection failed:", err));
 
-// 2. Fetch the PORT from .env (fallback to 5000 if not found)
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
