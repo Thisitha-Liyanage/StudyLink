@@ -37,7 +37,6 @@ app.get("/", (_req, res) => {
   console.log("study-link API is running");
 });
 
-// 1. Connect to the Database
 mongoDB().catch((err) => console.error("Database connection failed:", err));
 
 const PORT = process.env.PORT || 5000;
