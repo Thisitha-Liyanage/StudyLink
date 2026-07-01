@@ -34,7 +34,7 @@ export const sendMessage = async (data: {
 // 📌 FETCH SIDEBAR CHAT LIST
 export const getChatList = async () => {
     const res = await axios.get(
-        `https://study-link-jwxa.vercel.app/api/messages/chat-list`,
+        `https://study-link-jwxa.vercel.app/messages/chat-list`,
         getAuthHeaders() 
     );
     return res.data;
