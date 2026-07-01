@@ -29,7 +29,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/users", userRoutes);
 app.use("/api/ai", aiRoutes);
 app.use("/api/notes", noteRoutes);
-app.use("/api/messages", messageRoutes);
+app.use("/messages", messageRoutes);
 app.use("/api/admin", adminRoutes);
 
 app.get("/", (_req, res) => {
