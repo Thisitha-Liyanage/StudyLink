@@ -1,5 +1,4 @@
 import axios from "axios";
-import api from "./api"; 
 
 const getToken = () => localStorage.getItem("token");
 
@@ -10,30 +9,32 @@ const getAuthHeaders = () => ({
     }
 });
 
+// 📌 FETCH CONVERSATION HISTORY
 export const getMessages = async (receiverId: string) => {
     const res = await axios.get(
-        `${api}/messages/conversation/${receiverId}`,
+        `https://study-link-jwxa.vercel.app/api/messages/conversation/${receiverId}`,
         getAuthHeaders() 
     );
     return res.data;
 };
 
+// 📤 SEND NEW MESSAGE (Mapped directly to your exact verified endpoint)
 export const sendMessage = async (data: {
     receiverId: string;
     message: string;
 }) => {
     const res = await axios.post(
-        `${api}/messages`,
+        `https://study-link-jwxa.vercel.app/messages/send`,
         data,
         getAuthHeaders() 
     );
     return res.data;
 };
 
-
+// 📌 FETCH SIDEBAR CHAT LIST
 export const getChatList = async () => {
     const res = await axios.get(
-        `${api}/messages/chat-list`,
+        `https://study-link-jwxa.vercel.app/api/messages/chat-list`,
         getAuthHeaders() 
     );
     return res.data;

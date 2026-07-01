@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Send, MoreVertical } from "lucide-react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import {
@@ -19,7 +19,10 @@ const MessagesPage = () => {
     const dispatch = useAppDispatch();
     const { user } = useAuth();
 
-    // ✅ FIXED: Safely fallback to an empty object/array if slice doesn't match 'message' or 'chat'
+    // Create a ref to auto-scroll down when new messages land
+    const messagesEndRef = useRef<HTMLDivElement | null>(null);
+
+    // ✅ Fallback to ensure slice states safely default without breaking maps
     const { selectedUser, messages = [] } = useAppSelector(
         (state: any) => state.message || state.chat || {}
     );
@@ -27,12 +30,20 @@ const MessagesPage = () => {
     const [text, setText] = useState("");
     const [chatList, setChatList] = useState<any[]>([]);
 
+    // 🔄 AUTO SCROLL DOWN HANDLER
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
+
     // 📌 LOAD CHAT LIST
     useEffect(() => {
         const loadChats = async () => {
             try {
                 const data = await getChatList();
-                // Ensure data is an array before setting state
                 setChatList(Array.isArray(data) ? data : []);
             } catch (err) {
                 console.error("Chat list error", err);
@@ -41,7 +52,7 @@ const MessagesPage = () => {
         };
 
         loadChats();
-    }, []);
+    }, [messages]); // Updates left panel preview strings when new texts land
 
     // 📌 LOAD CONVERSATION
     useEffect(() => {
@@ -70,8 +81,9 @@ const MessagesPage = () => {
                 message: text,
             });
 
-            // ✅ FIXED: Handles if backend wraps the object inside a wrapper property
+            // Parse message data wrapper anomalies cleanly
             const messagePayload = newMsg?.data || newMsg?.savedMessage || newMsg;
+
             dispatch(addMessage(messagePayload));
             setText("");
         } catch (err) {
@@ -91,7 +103,7 @@ const MessagesPage = () => {
 
                 {chatList.map((chat: any) => (
                     <div
-                        key={chat.conversationId}
+                        key={chat.conversationId || chat.userId}
                         onClick={() =>
                             dispatch(
                                 setSelectedUser({
@@ -115,12 +127,11 @@ const MessagesPage = () => {
                                 <p className="text-white font-semibold">
                                     {chat.username}
                                 </p>
-                                <p className="text-gray-400 text-xs truncate max-w-[150px]">
-                                    {chat.lastMessage}
+                                <p className="text-gray-400 text-xs truncate max-w-37.5">
+                                    {chat.lastMessage || "No messages yet"}
                                 </p>
                             </div>
                         </div>
-                        {/* ✅ FIXED: Removed the second duplicate chat.lastMessage block from here */}
                     </div>
                 ))}
             </div>
@@ -137,18 +148,22 @@ const MessagesPage = () => {
 
                 {/* MESSAGES */}
                 <div className="flex-1 p-5 space-y-3 overflow-y-auto">
+                    {messages.length === 0 && selectedUser?._id && (
+                        <p className="text-gray-500 text-center mt-4">No conversation history. Say Hello!</p>
+                    )}
                     {messages.map((msg: any) => {
-                        const isMine = msg.senderId === user?._id;
+                        const currentUserId = user?._id || user?.id;
+                        const isMine = msg.senderId === currentUserId;
 
                         return (
                             <div
-                                key={msg._id}
+                                key={msg._id || Math.random().toString()}
                                 className={`flex ${isMine ? "justify-end" : "justify-start"}`}
                             >
                                 <div
-                                    className={`px-4 py-2 rounded-2xl max-w-75 ${isMine
-                                            ? "bg-green-500 text-black"
-                                            : "bg-black/30 text-white"
+                                    className={`px-4 py-2 rounded-2xl max-w-75 break-words ${isMine
+                                            ? "bg-green-500 text-black rounded-tr-none"
+                                            : "bg-black/30 text-white rounded-tl-none"
                                         }`}
                                 >
                                     {msg.message}
@@ -156,20 +171,24 @@ const MessagesPage = () => {
                             </div>
                         );
                     })}
+                    {/* Element placeholder to bind scroll anchor targets dynamically */}
+                    <div ref={messagesEndRef} />
                 </div>
 
                 {/* INPUT */}
                 <div className="p-4 border-t border-gray-800 flex gap-3">
                     <input
                         value={text}
+                        disabled={!selectedUser?._id}
                         onChange={(e) => setText(e.target.value)}
-                        className="flex-1 bg-black/30 px-4 py-2 rounded-xl text-white outline-none border border-gray-800 focus:border-gray-700"
-                        placeholder="Type message..."
+                        className="flex-1 bg-black/30 px-4 py-2 rounded-xl text-white outline-none border border-gray-800 focus:border-gray-700 disabled:opacity-50"
+                        placeholder={selectedUser?._id ? "Type message..." : "Select a contact first..."}
                         onKeyDown={(e) => e.key === "Enter" && handleSend()}
                     />
                     <button
                         onClick={handleSend}
-                        className="bg-green-500 px-4 rounded-xl text-black hover:bg-green-600 transition"
+                        disabled={!selectedUser?._id || !text.trim()}
+                        className="bg-green-500 px-4 rounded-xl text-black hover:bg-green-600 transition disabled:opacity-50"
                     >
                         <Send size={18} />
                     </button>
