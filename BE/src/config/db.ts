@@ -31,8 +31,8 @@ const mongoDB = async () => {
         return mongoose.connection;
     } catch (error) {
         console.log("DB connection error:", error);
-        cachedConnection = null; // Clear cache on failure so next request can retry cleanly
-        throw error; // ❌ Removed the recursive mongoDB() call
+        cachedConnection = null; // ✅ Reset cache so it can try cleanly on the next click
+        throw error;             // ✅ REMOVED the recursive mongoDB() loop!
     }
 };
 
