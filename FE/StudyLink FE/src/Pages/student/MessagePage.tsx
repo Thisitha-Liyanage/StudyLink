@@ -19,10 +19,8 @@ const MessagesPage = () => {
     const dispatch = useAppDispatch();
     const { user } = useAuth();
 
-    // Create a ref to auto-scroll down when new messages land
     const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-    // ✅ Fallback to ensure slice states safely default without breaking maps
     const { selectedUser, messages = [] } = useAppSelector(
         (state: any) => state.message || state.chat || {}
     );
@@ -39,7 +37,7 @@ const MessagesPage = () => {
         scrollToBottom();
     }, [messages]);
 
-    // 📌 LOAD CHAT LIST
+    // 📌 LOAD CHAT LIST (Only dependencies on selection to prevent loop crashes)
     useEffect(() => {
         const loadChats = async () => {
             try {
@@ -52,7 +50,7 @@ const MessagesPage = () => {
         };
 
         loadChats();
-    }, [messages]); // Updates left panel preview strings when new texts land
+    }, [selectedUser]); // ✅ FIXED: Prevents infinite fetch loops
 
     // 📌 LOAD CONVERSATION
     useEffect(() => {
@@ -75,19 +73,28 @@ const MessagesPage = () => {
     const handleSend = async () => {
         if (!text.trim() || !selectedUser?._id) return;
 
+        const currentText = text;
+        setText("");
+
         try {
             const newMsg = await sendMessage({
                 receiverId: selectedUser._id,
-                message: text,
+                message: currentText,
             });
 
-            // Parse message data wrapper anomalies cleanly
             const messagePayload = newMsg?.data || newMsg?.savedMessage || newMsg;
-
             dispatch(addMessage(messagePayload));
-            setText("");
+
+            setChatList((prevChats) =>
+                prevChats.map((chat) =>
+                    chat.userId === selectedUser._id
+                        ? { ...chat, lastMessage: currentText }
+                        : chat
+                )
+            );
         } catch (err) {
             console.error("Send error", err);
+            setText(currentText);
         }
     };
 
@@ -113,8 +120,9 @@ const MessagesPage = () => {
                                 })
                             )
                         }
-                        className={`p-3 mb-2 rounded-xl bg-black/30 cursor-pointer hover:bg-black/50 ${selectedUser?._id === chat.userId ? "border border-green-500/50" : ""
-                            }`}
+                        className={`p-3 mb-2 rounded-xl bg-black/30 cursor-pointer hover:bg-black/50 ${
+                            selectedUser?._id === chat.userId ? "border border-green-500/50" : ""
+                        }`}
                     >
                         <div className="flex items-center gap-3">
                             <img
@@ -152,7 +160,8 @@ const MessagesPage = () => {
                         <p className="text-gray-500 text-center mt-4">No conversation history. Say Hello!</p>
                     )}
                     {messages.map((msg: any) => {
-                        const currentUserId = user?._id || user?.id;
+                        // ✅ FIXED: Using direct type casting to bypass the TS2339 property evaluation error safely
+                        const currentUserId = user?._id || (user as any)?.id;
                         const isMine = msg.senderId === currentUserId;
 
                         return (
@@ -161,17 +170,17 @@ const MessagesPage = () => {
                                 className={`flex ${isMine ? "justify-end" : "justify-start"}`}
                             >
                                 <div
-                                    className={`px-4 py-2 rounded-2xl max-w-75 break-words ${isMine
+                                    className={`px-4 py-2 rounded-2xl max-w-75 break-words ${
+                                        isMine
                                             ? "bg-green-500 text-black rounded-tr-none"
                                             : "bg-black/30 text-white rounded-tl-none"
-                                        }`}
+                                    }`}
                                 >
                                     {msg.message}
                                 </div>
                             </div>
                         );
                     })}
-                    {/* Element placeholder to bind scroll anchor targets dynamically */}
                     <div ref={messagesEndRef} />
                 </div>
 
