@@ -1,14 +1,17 @@
 import { Response } from "express";
 import { AuthRequest } from "../Middleware/auth";
+import mongoDB from "../config/db"; 
 import {
     getChatListService,
     sendMessageService,
 } from "../Service/MessageService";
 import Message from "../Models/Message";
 
-// 📤 SEND MESSAGE
+
 export const sendMessage = async (req: AuthRequest, res: Response) => {
     try {
+        await mongoDB(); 
+
         const senderId = req.user.id;
         const { receiverId, message } = req.body;
 
@@ -31,17 +34,17 @@ export const sendMessage = async (req: AuthRequest, res: Response) => {
     }
 };
 
-// 📌 GET CONVERSATION
 export const getConversation = async (req: AuthRequest, res: Response) => {
     try {
-        const userId = req.user.id; // current logged-in user id
+        await mongoDB(); 
+        const userId = req.user.id; 
         const receiverId = req.params.receiverId;
 
         if (!receiverId) {
             return res.status(400).json({ message: "Receiver ID parameter is required" });
         }
 
-        // Fetches all messages between both users in order
+
         const messages = await Message.find({
             $or: [
                 { senderId: userId, receiverId: receiverId },
@@ -56,9 +59,11 @@ export const getConversation = async (req: AuthRequest, res: Response) => {
     }
 };
 
-// 📂 GET CHAT LIST
+
 export const getChatList = async (req: AuthRequest, res: Response) => {
     try {
+        await mongoDB();
+
         const userId = req.user.id;
 
         const chats = await getChatListService(userId);
