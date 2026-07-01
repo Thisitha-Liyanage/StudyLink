@@ -10,35 +10,31 @@ const getAuthHeaders = () => ({
     }
 });
 
-
 export const getMessages = async (receiverId: string) => {
-
     const res = await axios.get(
         `${api}/messages/conversation/${receiverId}`,
-        getAuthHeaders()
+        getAuthHeaders() 
     );
     return res.data;
 };
-
 
 export const sendMessage = async (data: {
     receiverId: string;
     message: string;
 }) => {
-
     const res = await axios.post(
         `${api}/messages`,
         data,
-        getAuthHeaders()
+        getAuthHeaders() 
     );
     return res.data;
 };
 
-// 📂 GET CHAT LIST
+
 export const getChatList = async () => {
     const res = await axios.get(
         `${api}/messages/chat-list`,
-        getAuthHeaders()
+        getAuthHeaders() 
     );
     return res.data;
 };
