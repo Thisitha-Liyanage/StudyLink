@@ -12,9 +12,9 @@ const getAuthHeaders = () => ({
 // 📌 FETCH CONVERSATION HISTORY
 export const getMessages = async (receiverId: string) => {
     const res = await axios.get(
-        `https://study-link-jwxa.vercel.app/api/messages/conversation/${receiverId}`,
+        `https://study-link-jwxa.vercel.app/messages/conversation/${receiverId}`,
         getAuthHeaders() 
-    );
+    ); 
     return res.data;
 };
 
